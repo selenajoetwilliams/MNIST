@@ -1,10 +1,13 @@
 # this class will create the neural network
 # link to pytorch tutorial: https://pytorch.org/tutorials/beginner/basics/intro.html
 
+import os
 import torch
+from torch import nn
 import numpy as np
 from torch.utils.data import Dataset
-from torchvision import datasets
+from torch.utils.data import DataLoader
+from torchvision import datasets, transforms
 from torchvision.transforms import ToTensor
 import matplotlib.pyplot as plt
 
@@ -56,8 +59,7 @@ ds = datasets.FashionMNIST(
     train=True,
     download=True,
     transform=ToTensor(),
-    target_transform=Lambda(lambda y: torch.zeros(10, dtype=torch.float).scatter_(0, torch.tensor(y),
-value=1))
+    target_transform=(lambda y: torch.zeros(10, dtype=torch.float).scatter_(0, torch.tensor(y), value=1))
 )
 
 
