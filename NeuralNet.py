@@ -62,6 +62,35 @@ ds = datasets.FashionMNIST(
     target_transform=(lambda y: torch.zeros(10, dtype=torch.float).scatter_(0, torch.tensor(y), value=1))
 )
 
+###########################################
+# BUILD MODEL
+
+device = "cuda" if torch.cuda.is_available() else "cpu"
+print(f"Using {device} device") # note: I am still using cpu 
+
+class NeuralNetwork(nn.Module):
+
+    # initializing the model
+    def __init__(self):
+        super(NeuralNetwork, self).__init__()
+        self.flatten = nn.Flatten()
+        self.linear_relu_stack = nn.Sequential(
+            # these are the different model layers
+            nn.Linear(28*28, 512), # image dimensions, # of model dimentions?
+            nn.ReLU(),
+            nn.Linear(512, 512),
+            nn.ReLU(),
+            nn.Linear(512, 10),
+        )
+
+    # defining the forward pass
+    def forward(self, x):
+        x = self.flatten(x)
+        logits = self.linear_relu_stack(x)
+        return logits
+
+model = NeuralNetwork().to(device)
+print(model)
 
 
 
