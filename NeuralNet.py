@@ -98,7 +98,8 @@ pred_probab = nn.Softmax(dim=1)(logits)
 y_pred = pred_probab.argmax(1)
 print(f"Predicted class: {y_pred}")
 
-# Model Layers
+###########################################
+# MODEL LAYERS
 
 # sampling a mini batch to see what happens as it goes through the model
 input_image = torch.rand(3, 28, 28)
@@ -143,6 +144,33 @@ for name, param in model.named_parameters():
     print(f"Layer: {name} | Size: {param.size()} | Values : {param[:2]} \n")
 # question: what does the param[:2] in the line above mean?
 
+###########################################
+# AUTOGRAD (automatic differentiation)
+
+x = torch.ones(5) # input tensor
+y = torch.zeros(3) # expected output
+w = torch.randn(5, 3, requires_grad=True)
+b = torch.randn(3, requires_grad=True)
+z = torch.matmul(x, w)+b
+loss = torch.nn.functional.binary_cross_entropy_with_logits(z, y)
+
+# printing out the gradient function?
+print(f"Gradient function for z = {z.grad_fn}")
+print(f"Gradient function for loss = {loss.grad_fn}")
+
+# computing gradients
+print(f"\nComputing the gradients...") # I added this myself
+loss.backward()
+print("The gradient of the weights is: ")
+print(w.grad)
+print("The gradient of the biases is: ")
+print(b.grad)
+
+"""
+ note: I skipped the code in the rest of this part of the tutorial
+ because it covered things like disabling gradient tracking which
+ I don't think I need for the MNIST neural network
+"""
 
 
 
