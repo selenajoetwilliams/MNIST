@@ -135,6 +135,14 @@ logits = seq_modules(input_image)
 softmax = nn.Softmax(dim=1)
 pred_probab = softmax(logits)
 
+# model parameters
+# here we iterate over each parameter and print the size & a preview of its values
+print(f"Model structure: {model}\n\n")
+
+for name, param in model.named_parameters():
+    print(f"Layer: {name} | Size: {param.size()} | Values : {param[:2]} \n")
+# question: what does the param[:2] in the line above mean?
+
 
 
 
