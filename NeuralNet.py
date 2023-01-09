@@ -246,7 +246,7 @@ for t in range(epochs):
     test_loop(test_dataloader, model, loss_fn)
 print("Done!")
 
-# question: these tensors are blank right? 
+# question: these tensors are blank right?
 # question: what about loading the acutal data?
 # question: this just creates 2 blank 2-D arrays, right? one 1x2 array and another 3x4 array?
 # data = [[1,2],[3,4]]
