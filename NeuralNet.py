@@ -1,6 +1,23 @@
 # this class will create the neural network
 # link to pytorch tutorial: https://pytorch.org/tutorials/beginner/basics/intro.html
 
+'''
+WELCOME!
+This is my first attempt at making a neural network in pytorch using the fashion MNIST
+dataset.
+
+TODO
+1. I have questions listed throughout this file that I would like help with 
+search for 'question' to find a full list of them.
+
+2. I am getting a terminal error because my use of 'pretrained' somewhere has
+been deprecated and I should use weights instead. The lines that cause the terminal
+error don't have 'pretrained' anywhere in them, so I'm not sure what line I should 
+change to eliminate this. Any & all help is apprecaited. Thank you!
+
+'''
+
+
 import os
 import torch
 from torch import nn
@@ -10,6 +27,7 @@ from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
 from torchvision.transforms import ToTensor
 import matplotlib.pyplot as plt
+import torchvision.models as models
 
 ###########################################
 # TENSORS
@@ -192,12 +210,17 @@ have all the right code for optimization:
 # question: at this step when I run the program, my output doesn't match the
 # output in the tutorial 
 
+# defining the hyper parameters
 learning_rate = 1e-3
 batch_size = 64
 epochs = 5
 
+# defining the type of loss function 
+# in this case we use cross entropy loss
 loss_fn = nn.CrossEntropyLoss()
 
+# defining the optimizer object 
+# in this case we use stochastic gradient descent
 optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
 
 # full implementation of optimization algorithm
@@ -235,16 +258,37 @@ def test_loop(dataloader, model, loss_fn):
     print(f"Test Error: \n Accuracy: {(100*correct):>0.1f}%, Avg loss: {test_loss:>8f} \n")
 
 # initializing the loss function optimizer
-
 loss_fn = nn.CrossEntropyLoss()
 optimizer = torch.optim.SGD(model.parameters(), lr = learning_rate)
 
-epochs = 10
+epochs = 2
 for t in range(epochs):
-    print(f"Epoch {t+1}\n----------------------")
+    print(f"Epoch {t+1}\n---------------------------")
     train_loop(train_dataloader, model, loss_fn, optimizer)
     test_loop(test_dataloader, model, loss_fn)
 print("Done!")
+
+
+###########################################
+# Save & Load Model
+
+# saving the model
+model = models.vgg16(pretrained=True) # pretrained=True used to be passed into these params
+torch.save(model.state_dict(), 'model_weights.pth')
+
+# loading the model
+model = models.vgg16() # we do not specify pretrained=True, i.e. we do not load default weights
+    # note, Patrick Loeber's youtube tutorial has the line above as: 
+    # model = Model(*args, **kwargs)
+model.load_state_dict(torch.load('model_weights.pth'))
+model.eval()
+'''
+Question:
+I get a terminal error when I run this code saying that 'pre-trained' is deprecated
+and to use 'weights' instead. Unfortunately the lines the terminal error points to don't
+contain the key-word pretrained, which makes it harder to trouble shoot this issue. 
+What should I change to avoid this issue?
+'''
 
 # question: these tensors are blank right?
 # question: what about loading the acutal data?
